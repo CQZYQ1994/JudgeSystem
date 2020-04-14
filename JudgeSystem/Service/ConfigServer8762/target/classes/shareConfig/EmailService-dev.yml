@@ -1,0 +1,22 @@
+server:
+  port: 8016
+spring:
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 1101183012@qq.com
+    password: zotnixyqtaacbadg
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+        debug: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    instance:
+      prefer-ip-address: true
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.judgesystem.dao.RoleDao">
+    <select id="findAll" resultType="Role">
+        select * from role
+    </select>
+    <select id="findById" parameterType="int" resultType="Role">
+        select * from role where id = #{id}
+    </select>
+
+
+</mapper>

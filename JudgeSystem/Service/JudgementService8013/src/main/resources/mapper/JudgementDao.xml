@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.judgesystem.dao.JudgementDao">
+    <select id="findAll" resultType="Judgement">
+        select * from judgement limit #{param1},#{param2}
+    </select>
+    <select id="count" resultType="int">
+        select count(id) from judgement
+    </select>
+    <select id="findById" parameterType="int" resultType="Judgement">
+        select * from judgement where id = #{id}
+    </select>
+    <insert id="save" parameterType="Judgement">
+        insert into judgement (applyer,apply_position,review_status,start_time,end_time,review_opinion,review_result,create_time,document_path) values(#{applyer},#{apply_position},#{review_status},#{start_time},#{end_time},#{review_opinion},#{review_result},#{create_time},#{document_path})
+    </insert>
+    <update id="update" parameterType="Judgement">
+        update judgement set applyer=#{applyer},apply_position=#{apply_position},review_status=#{review_status},start_time=#{start_time},end_time=#{end_time},review_opinion=#{review_opinion},review_result=#{review_result},create_time=#{create_time},document_path=#{document_path} where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="int">
+        delete from judgement where id = #{id}
+    </delete>
+</mapper>

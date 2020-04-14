@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>图书列表</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <td>用户ID</td>
+        <td>用户账号</td>
+        <td>用户密码</td>
+        <td>用户姓名</td>
+        <td>邮箱地址</td>
+        <td>部门</td>
+        <td>职位</td>
+        <td>权限</td>
+    </tr>
+    <tr th:each="user:${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.account}"></td>
+        <td th:text="${user.password}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.department}"></td>
+        <td th:text="${user.position}"></td>
+        <td th:text="${user.power}"></td>
+    </tr>
+</table>
+</body>
+</html>

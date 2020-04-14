@@ -1,0 +1,27 @@
+server:
+  port: 8030
+test:
+  uri: lb://UserService
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: route_UserService
+          uri: ${test.uri}
+          predicates:
+            - Path=/user/**
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    instance:
+      prefer-ip-address: true
+

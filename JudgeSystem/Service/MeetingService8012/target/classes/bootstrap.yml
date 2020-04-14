@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: MeetingService
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: http://localhost:8762
+      fail-fast: true

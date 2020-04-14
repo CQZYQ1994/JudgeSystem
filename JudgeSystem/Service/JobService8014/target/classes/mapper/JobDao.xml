@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.judgesystem.dao.JobDao">
+    <select id="findAll" resultType="Job">
+        select * from job limit #{param1},#{param2}
+    </select>
+    <select id="count" resultType="int">
+        select count(id) from job
+    </select>
+    <select id="findById" parameterType="int" resultType="Job">
+        select * from job where id = #{id}
+    </select>
+    <insert id="save" parameterType="Job">
+        insert into job (department,position,number,requirement,treatment,start_time,end_time,create_time,create_name,email,document_path) values(#{department},#{position},#{number},#{requirement},#{treatment},#{start_time},#{end_time},#{create_time},#{create_name},#{email},#{document_path})
+    </insert>
+    <update id="update" parameterType="Job">
+        update job set department=#{department},position=#{position},number=#{number},requirement=#{requirement},treatment=#{treatment},start_time=#{start_time},end_time=#{end_time},create_time=#{create_time},create_name=#{create_name},email=#{email},document_path=#{document_path} where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="int">
+        delete from job where id = #{id}
+    </delete>
+</mapper>

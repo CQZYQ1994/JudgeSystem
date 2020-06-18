@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.judgesystem.dao.ApplicationDao">
+    <resultMap id="baseMap" type="Application">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="topic" property="topic"></result>
+        <result column="description" property="description"></result>
+        <result column="review_status" property="review_status"></result>
+        <result column="create_time" property="create_time"></result>
+        <result column="update_time" property="update_time"></result>
+        <result column="review_opinion" property="review_opinion"></result>
+        <result column="review_result" property="review_result"></result>
+        <result column="review_vote" property="review_vote"></result>
+        <result column="document" property="document"></result>
+        <result column="user_id" property="user_id"></result>
+        <result column="processDefKey" property="processDefKey"></result>
+        <result column="processInsId" property="processInsId"></result>
+        <!--<association property="role" select="com.judgesystem.dao.RoleDao.findById" column="role_id"></association>-->
+        <association property="userInfo" javaType="UserInfo">
+            <id column="user_id" property="id"></id>
+            <result column="username" property="username"></result>
+            <result column="password" property="password"></result>
+            <result column="name" property="name"></result>
+            <result column="postId" property="postId"></result>
+            <result column="gender" property="gender"></result>
+            <result column="birthday" property="birthday"></result>
+            <result column="nation" property="nation"></result>
+            <result column="nativePlace" property="nativePlace"></result>
+            <result column="email" property="email"></result>
+            <result column="department" property="department"></result>
+            <result column="position" property="position"></result>
+        </association>
+    </resultMap>
+    <select id="findAll" resultMap="baseMap">
+        select * from application a,user u where a.user_id=u.id
+    </select>
+    <select id="findCurrentApp" resultType="Application">
+        select * from application where review_status=false
+    </select>
+    <select id="findByUserId" parameterType="int" resultType="Application">
+        select * from application where user_id = #{id}
+    </select>
+    <select id="findById" parameterType="int" resultType="Application">
+        select * from application where id = #{id}
+    </select>
+    <insert id="insert" parameterType="Application">
+        insert into application (name,topic,description,user_id,review_status,create_time,review_opinion,review_result,review_vote,document,processDefKey,processInsId)
+        values(#{name},#{topic},#{description},#{user_id},#{review_status},NOW(),#{review_opinion},#{review_result},#{review_vote},#{document},#{processDefKey},#{processInsId})
+    </insert>
+    <update id="update" parameterType="Application">
+        update application set name=#{name},topic=#{topic},description=#{description},user_id=#{user_id},review_status=#{review_status},update_time=NOW(),
+        review_opinion=#{review_opinion},review_result=#{review_result},review_vote=#{review_vote},document=#{document},processDefKey=#{processDefKey}, processInsId=#{processInsId} where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="int">
+        delete from application where id = #{id}
+    </delete>
+    <update id="updateVoteByName" parameterType="Application">
+        update application set review_vote=#{review_vote} where id=#{id} and name=#{name}
+    </update>
+    <update id="updateStatusById" parameterType="Application">
+        update judgement set review_status=#{review_status} where id=#{id}
+    </update>
+</mapper>

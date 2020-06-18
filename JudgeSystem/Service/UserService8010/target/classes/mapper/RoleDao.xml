@@ -7,6 +7,16 @@
     <select id="findById" parameterType="int" resultType="Role">
         select * from role where id = #{id}
     </select>
+    <update id="updateRole" parameterType="Role">
+        update role set role_name=#{role_name},role=#{role},description=#{description} where id = #{id}
+    </update>
+    <insert id="insertRole" parameterType="Role">
+        insert into role(role_name,role,description) values (#{role_name,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
     <!--<resultMap id="BaseResultMap" type="org.javaboy.vhr.model.Role" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
@@ -24,10 +34,7 @@
         from role
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from role
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+
     <insert id="insert" parameterType="org.javaboy.vhr.model.Role" >
     insert into role (id, name, nameZh
       )

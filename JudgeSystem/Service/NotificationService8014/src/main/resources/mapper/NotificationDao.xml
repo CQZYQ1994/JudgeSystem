@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.judgesystem.dao.NotificationDao">
+    <select id="findAll" resultType="Notification">
+        select * from notification where del_sign=false
+    </select>
+
+    <select id="findById" parameterType="int" resultType="Notification">
+        select * from notification where id = #{id}
+    </select>
+    <insert id="save" parameterType="Notification">
+        insert into notification (notifi_name,notifi_desc,start_time,end_time,create_time,create_user,document) values(#{notifi_name},#{notifi_desc},#{start_time},#{end_time},NOW(),#{create_user},#{document})
+    </insert>
+    <update id="update" parameterType="Notification">
+        update notification set notifi_name=#{notifi_name},notifi_desc=#{notifi_desc},start_time=#{start_time},end_time=#{end_time},create_time=#{create_time},create_user=#{create_user},document=#{document} where id=#{id}
+    </update>
+    <delete id="delete" parameterType="int">
+        delete from notification where id = #{id}
+    </delete>
+    <update id="deleteById" parameterType="Notification">
+        update notification set del_sign=true where id=#{id}
+    </update>
+</mapper>

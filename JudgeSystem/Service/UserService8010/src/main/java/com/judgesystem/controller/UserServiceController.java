@@ -1,11 +1,10 @@
 package com.judgesystem.controller;
 
-import com.judgesystem.dao.RoleDao;
-import com.judgesystem.dao.UserDao;
-import com.judgesystem.entity.Role;
+
 import com.judgesystem.entity.User;
+import com.judgesystem.entity.UserRole;
+import com.judgesystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,49 +12,67 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserServiceController {
-    @Value("${server.port}")
-    private String port;
+
     @Autowired
-    private UserDao userDao;
-    @Autowired
-    private RoleDao roleDao;
-    @GetMapping("/index")
-    public String index() {
-        return "hello user"+this.port;
+    private UserService userService;
+
+
+    @GetMapping("/findAll")
+    public List<User> findAllUser(){
+        return userService.findAllUser();
     }
 
-    @GetMapping("/findAll/{index}/{limit}")
-    public List<User> findAll(@PathVariable("index") int index,@PathVariable("limit") int limit) {
-        return userDao.findAll(index,limit);
-    }
-
-    public List<Role> findAll(){
-        return roleDao.findAll();
-    }
     @GetMapping("/count")
     public int count(){
-        return userDao.count();
+        return userService.count();
     }
 
     @GetMapping("/findById/{id}")
     public User findById(@PathVariable("id") int id){
-        return userDao.findById(id);
+        return userService.findById(id);
+    }
+    @GetMapping("/findByName/{name}")
+    public List<User> findUserByName(@PathVariable("name") String name){
+        return userService.findUserByName(name);
+    }
+    @GetMapping("/findByRole/{role}")
+    public List<User> findUserByRole(@PathVariable("role") String role){
+        return userService.findUserByRole(role);
     }
 
+
     @PostMapping("/save")
-    public int save(@RequestBody User user){
-             userDao.save(user);
-        return 1;
+    public void save(@RequestBody User user){
+             userService.save(user);
     }
 
     @PutMapping("/update")
-    public int update(@RequestBody User user){
-        userDao.update(user);
-        return 1;
+    public void update(@RequestBody User user){
+        userService.update(user);
     }
 
     @DeleteMapping("/deleteById/{id}")
     public void deleteById(@PathVariable("id") int id){
-        userDao.deleteById(id);
+        userService.deleteById(id);
+    }
+    @PostMapping("/saveUserRole")
+    public void saveUserRole(@RequestBody UserRole userRole){
+        userService.saveUserRole(userRole);
+    }
+    @GetMapping("/deleteByUserId/{id}")
+    public void deleteUserRoleByUserId(@PathVariable("id") int id){
+        userService.deleteUserRoleByUserId(id);
+    }
+    @PutMapping("/updateUserRoleByUserId")
+    public void updateUserRoleByUserId(@RequestBody UserRole userRole){
+        userService.updateUserRoleByUserId(userRole);
+    }
+    @PutMapping("/updateUser")
+    public void updateUserInformation(@RequestBody User user){
+        userService.updateInformation(user);
+    }
+    @GetMapping("/getAllUserExceptCurrentUser/{id}")
+    public List<User> getAllUserExceptCurrentUser(@PathVariable("id") int id){
+        return userService.getAllUserExceptCurrentUser(id);
     }
 }

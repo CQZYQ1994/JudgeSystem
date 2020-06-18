@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.judgesystem.dao.MeetingInfoDao">
+    <resultMap id="ResultMap" type="MeetingInfo" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="create_name" property="create_name" jdbcType="VARCHAR" />
+        <result column="topic" property="topic" jdbcType="VARCHAR" />
+        <result column="place" property="place" jdbcType="VARCHAR" />
+        <result column="participants" property="participants" jdbcType="VARCHAR" />
+        <result column="meet_status" property="meet_status" jdbcType="BIT" />
+        <result column="create_time" property="create_time" jdbcType="DATE" />
+        <!--<association property="meetingTime" javaType="MeetingTime">
+            <id column="id" property="id" jdbcType="INTEGER" />
+            <id column="meetingInfoId" property="meetingInfoId" jdbcType="INTEGER" />
+            <result column="meetingTime" property="meetingTime" jdbcType="DATE" />
+            <result column="vote" property="vote" jdbcType="INTEGER" />
+        </association>-->
+        <collection property="meetingTimes" ofType="MeetingTime" javaType="java.util.List">
+            <id column="tid" property="id" jdbcType="INTEGER" />
+            <result column="meetingInfoId" property="meetingInfoId" jdbcType="INTEGER" />
+            <result column="meetingTime" property="meetingTime" jdbcType="DATE" />
+            <result column="vote" property="vote" jdbcType="INTEGER" />
+        </collection>
+    </resultMap>
+   <!-- <resultMap id="meetWithTime" type="MeetingTime" extends="ResultMap">
+        <collection property="meetingTime" ofType="MeetingTime">
+            <id column="id" property="id" jdbcType="INTEGER" />
+            <id column="meetingInfoId" property="meetingInfoId" jdbcType="INTEGER" />
+            <result column="meetingTime" property="meetingTime" jdbcType="DATE" />
+            <result column="vote" property="vote" jdbcType="INTEGER" />
+        </collection>
+    </resultMap>-->
+    <select id="findAll" resultMap="ResultMap">
+        select mi.id,mi.create_name,mi.topic,mi.place,mi.participants,mi.meet_status,mi.create_time,mt.id as tid,mt.meetingInfoId,mt.meetingTime,mt.vote from meetingInfo mi left join meetingTime mt on mi.id=mt.meetingInfoId
+    </select>
+    <select id="findCurrentMeet" resultType="MeetingInfo">
+        select * from meetingInfo where meet_status=true
+    </select>
+    <select id="count" resultType="int">
+        select count(id) from meetingInfo
+    </select>
+    <select id="findById" parameterType="int" resultType="MeetingInfo">
+        select * from meetingInfo where id = #{id}
+    </select>
+    <select id="findByTopic" parameterType="String" resultType="MeetingInfo">
+        select * from meetingInfo where topic = #{topic}
+    </select>
+    <insert id="save" parameterType="MeetingInfo">
+        insert into meetingInfo (create_name,topic,place,participants,create_time,meet_status,document_path) values(#{create_name},#{topic},#{place},#{participants},#{create_time},#{meet_status},#{document_path})
+    </insert>
+    <update id="update" parameterType="MeetingInfo">
+        update meetingInfo set create_name = #{create_name},topic = #{topic},place = #{place},participants = #{participants},create_time = #{create_time},meet_status=#{meet_status},document_path=#{document_path} where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="int">
+        delete from meetingInfo where id = #{id}
+    </delete>
+</mapper>

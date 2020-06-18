@@ -6,14 +6,21 @@
         <result column="username" property="username"></result>
         <result column="password" property="password"></result>
         <result column="name" property="name"></result>
+        <result column="postId" property="postId"></result>
+        <result column="gender" property="gender"></result>
+        <result column="birthday" property="birthday"></result>
+        <result column="nation" property="nation"></result>
+        <result column="nativePlace" property="nativePlace"></result>
         <result column="email" property="email"></result>
         <result column="department" property="department"></result>
         <result column="position" property="position"></result>
+        <result column="enabled" property="enabled"></result>
        <!--<association property="role" select="com.judgesystem.dao.RoleDao.findById" column="role_id"></association>-->
         <association property="role" javaType="Role">
             <id property="id" column="role_id"></id>
             <result property="role" column="role"></result>
             <result property="role_name" column="role_name"></result>
+            <result property="description" column="description"></result>
         </association>
     </resultMap>
 
@@ -21,7 +28,7 @@
        select u.id id,u.username,u.password,u.name,u.email,u.department,u.position,r.id role_id,r.role,r.role_name from user u,role r where u.role_id=r.id order by id limit #{param1},#{param2}
     </select>-->
    <select id="findAll" resultMap="userMap">
-        select * from user u,user_role ur,role r where u.id=ur.user_id and ur.role_id=r.id order by u.id limit #{param1},#{param2}
+        select * from user u,user_role ur,role r where u.id=ur.user_id and ur.role_id=r.id order by u.id
     </select>
   <!--  <select id="login" resultMap="userMap">
         select u.id id,u.username,u.password,u.name,u.email,u.department,u.position,r.id role_id,r.role,r.role_name from user u,role r where u.role_id=r.id and account=#{param1} and password=#{param2}
@@ -38,18 +45,113 @@
     <select id="getUserRolesByUid" resultType="Role">
         select * from role r,user_role ur where r.id=ur.role_id and ur.user_id=#{id}
     </select>
-    <select id="findById"  resultType="User">
-        select * from user where id = #{id}
+    <select id="findById" resultMap="userMap">
+        select  * from user u,user_role ur,role r where u.id=ur.user_id and ur.role_id=r.id and u.id = #{id}
+    </select>
+    <select id="findUserByRole" resultMap="userMap">
+        select  * from user u,user_role ur,role r where u.id=ur.user_id and ur.role_id=r.id and r.role = #{role}
+    </select>
+    <select id="findUserByName" resultMap="userMap">
+        select  * from user u,user_role ur,role r where u.id=ur.user_id and ur.role_id=r.id and u.name = #{name}
     </select>
     <insert id="save" parameterType="User">
-        insert into user (username,password,name,email,department,position) values(#{username},#{password},#{name},#{email},#{department},#{position})
+        insert into user (username,password,postId,name,gender,birthday,nation,nativePlace,email,department,position) values(#{username},#{password},#{postId},#{name},#{gender},#{birthday},#{nation},#{nativePlace},#{email},#{department},#{position})
     </insert>
     <update id="update" parameterType="User">
-        update user set username = #{username},password = #{password},name = #{name},email = #{email},department = #{department},position = #{position} where id=#{id}
+        update user as u,user_role as ur set u.username = #{username},u.password = #{password},u.postId=#{postId},u.name = #{name},u.gender=#{gender},u.birthday=#{birthday},u.nation=#{nation},u.nativePlace=#{nativePlace},u.email = #{email},u.department = #{department},u.position = #{position},ur.role_id=#{role.id} where u.id=ur.user_id and u.id=#{id}
+    </update>
+    <update id="updateUserInformation" parameterType="User">
+        update user set username = #{username},password = #{password},postId=#{postId},name = #{name},gender=#{gender},birthday=#{birthday},nation=#{nation},nativePlace=#{nativePlace},email = #{email},department = #{department},position = #{position} where id=#{id}
     </update>
     <delete id="deleteById" parameterType="int">
         delete from user where id = #{id}
     </delete>
+    <select id="getAllUserExceptCurrentUser" resultMap="userMap ">
+        select * from user where id !=#{id};
+    </select>
+    <insert id="insertSelective" parameterType="User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="postId != null">
+                postId,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="nation != null">
+                nation,
+            </if>
+            <if test="nativePlace != null">
+                nativePlace,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="department != null">
+                department,
+            </if>
+            <if test="position != null">
+                position,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="postId != null">
+                #{postId,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=DATE},
+            </if>
+            <if test="nation != null">
+                #{nation,jdbcType=VARCHAR},
+            </if>
+            <if test="nativePlace != null">
+                #{nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="department != null">
+                #{department,jdbcType=VARCHAR},
+            </if>
+            <if test="position != null">
+                #{position,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="addUser">
+        insert into user (username,password,postId,name,gender,birthday,nation,nativePlace,email,department,position)
+        values
+        <foreach collection="list" separator="," item="user">
+            (#{user.username,jdbcType=VARCHAR}, #{user.password,jdbcType=VARCHAR},#{user.postId,jdbcType=VARCHAR},#{user.name,jdbcType=VARCHAR},#{user.gender,jdbcType=VARCHAR},
+            #{user.birthday,jdbcType=DATE},#{user.nation,jdbcType=VARCHAR},
+            #{user.nativePlace,jdbcType=VARCHAR}, #{user.email,jdbcType=VARCHAR},
+            #{user.department,jdbcType=VARCHAR}, #{user.position,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
 
   <!--  <mapper namespace="org.javaboy.vhr.mapper.HrMapper">
         <resultMap id="BaseResultMap" type="org.javaboy.vhr.model.Hr">
@@ -74,8 +176,8 @@
         <sql id="Base_Column_List">
     id, name, phone, telephone, address, enabled, username, password, userface, remark
   </sql>
-        <select id="getAllHrsExceptCurrentHr" resultMap="BaseResultMap">
-        select * from hr where id !=#{id};
+        <select id="getAllUserExceptCurrentUser" resultMap="BaseResultMap">
+        select * from user where id !=#{id};
     </select>
         <select id="getAllHrs" resultMap="HrWithRoles">
             select hr.id, hr.name, hr.phone, hr.telephone, hr.address, hr.enabled, hr.username, hr.userface,
@@ -112,73 +214,7 @@
       #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{userface,jdbcType=VARCHAR},
       #{remark,jdbcType=VARCHAR})
   </insert>
-        <insert id="insertSelective" parameterType="org.javaboy.vhr.model.Hr">
-            insert into hr
-            <trim prefix="(" suffix=")" suffixOverrides=",">
-                <if test="id != null">
-                    id,
-                </if>
-                <if test="name != null">
-                    name,
-                </if>
-                <if test="phone != null">
-                    phone,
-                </if>
-                <if test="telephone != null">
-                    telephone,
-                </if>
-                <if test="address != null">
-                    address,
-                </if>
-                <if test="enabled != null">
-                    enabled,
-                </if>
-                <if test="username != null">
-                    username,
-                </if>
-                <if test="password != null">
-                    password,
-                </if>
-                <if test="userface != null">
-                    userface,
-                </if>
-                <if test="remark != null">
-                    remark,
-                </if>
-            </trim>
-            <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null">
-                    #{id,jdbcType=INTEGER},
-                </if>
-                <if test="name != null">
-                    #{name,jdbcType=VARCHAR},
-                </if>
-                <if test="phone != null">
-                    #{phone,jdbcType=CHAR},
-                </if>
-                <if test="telephone != null">
-                    #{telephone,jdbcType=VARCHAR},
-                </if>
-                <if test="address != null">
-                    #{address,jdbcType=VARCHAR},
-                </if>
-                <if test="enabled != null">
-                    #{enabled,jdbcType=BIT},
-                </if>
-                <if test="username != null">
-                    #{username,jdbcType=VARCHAR},
-                </if>
-                <if test="password != null">
-                    #{password,jdbcType=VARCHAR},
-                </if>
-                <if test="userface != null">
-                    #{userface,jdbcType=VARCHAR},
-                </if>
-                <if test="remark != null">
-                    #{remark,jdbcType=VARCHAR},
-                </if>
-            </trim>
-        </insert>
+
         <update id="updateByPrimaryKeySelective" parameterType="org.javaboy.vhr.model.Hr">
             update hr
             <set>

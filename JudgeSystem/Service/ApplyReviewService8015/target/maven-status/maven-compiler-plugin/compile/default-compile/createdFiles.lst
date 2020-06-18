@@ -1,0 +1,7 @@
+com\judgesystem\controller\ApplyServiceController.class
+com\judgesystem\ApplyServiceApplication.class
+com\judgesystem\entity\UserInfo.class
+com\judgesystem\service\ApplicationService.class
+com\judgesystem\entity\Application.class
+com\judgesystem\config\CrosConfig.class
+com\judgesystem\dao\ApplicationDao.class

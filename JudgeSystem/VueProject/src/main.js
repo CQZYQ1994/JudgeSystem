@@ -5,6 +5,8 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import {initMenu} from './utils/menus'
+import htmlToPdf from './utils/htmlToPdf'
+Vue.use(htmlToPdf)
 //将token加入接口请求头
 
 //axios.defaults.baseURL = 'http://localhost:8010/user/'
@@ -26,7 +28,7 @@ router.beforeEach((to, from, next )=> {
     return next();
   }
   const usertoken = window.localStorage.getItem('token');
-  if (!usertoken){return next('/login');}
+  if (usertoken===null){return next('/login');}
   else {
     initMenu(router,store);
     next();

@@ -1,0 +1,71 @@
+package com.judgesystem.service;
+
+import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.stereotype.Component;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+
+
+@Component
+public class ServiceFallbackProvider implements FallbackProvider {
+
+
+
+    @Override
+    public String getRoute() {
+        //表明为那个服务提供回退
+        return "*";//*表示为所有服务提供回退
+    }
+
+    @Override
+    public ClientHttpResponse fallbackResponse(String route, Throwable cause) {
+
+        return new ClientHttpResponse() {
+
+            @Override
+            public InputStream getBody() throws IOException {
+                return new ByteArrayInputStream("服务不可用，请稍后再试".getBytes());
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                HttpHeaders headers = new HttpHeaders();
+                MediaType mt=new MediaType("application","json", Charset.forName("UTF-8"));
+               // headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.setContentType(mt);
+                return headers;
+            }
+
+            @Override
+            public HttpStatus getStatusCode() throws IOException {
+                return HttpStatus.OK;
+            }
+
+            @Override
+            public int getRawStatusCode() throws IOException {
+                //return 200;
+                return this.getStatusCode().value();
+            }
+
+            @Override
+            public String getStatusText() throws IOException {
+                //return "OK";
+                return this.getStatusCode().getReasonPhrase();
+            }
+
+            @Override
+            public void close() {
+                // TODO Auto-generated method stub
+            }
+        };
+    }
+
+
+}

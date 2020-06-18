@@ -1,24 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import SearchUser from '../views/User/UserSearch'
+import SearchUser from '../views/User/UserManage'
 import AddUser from '../views/User/UserAdd'
-import JobManagement from '../views/Job/JobManagement'
-import JobAdd from '../views/Job/JobAdd'
-import ApplyManagement from '../views/Apply/ApplyManagement'
+import JobManagement from '../views/Task/TaskManage'
+import JobAdd from '../views/Task/TaskAdd'
+import ApplyManagement from '../views/Apply/ApplyManage'
 import ApplyAdd from '../views/Apply/ApplyAdd'
 import index from '../views/Public/index'
 import UserUpdate from '../views/User/UserUpdate'
-import JobUpdate from '../views/Job/JobUpdate'
-import ReviewManagement from '../views/Review/ReviewManagement'
+import JobUpdate from '../views/Task/TaskUpdate'
+import ReviewManagement from '../views/Review/ReviewManage'
 import ReviewAdd from '../views/Review/ReviewAdd'
-import MeetManagement from '../views/Meetting/MeetManagement'
+import MeetManagement from '../views/Meetting/MeetManage'
 import MeetAdd from '../views/Meetting/MeetAdd'
 import ApplyUpdate from '../views/Apply/ApplyUpdate'
 import ReviewUpdate from '../views/Review/ReviewUpdate'
 import MeetUpdate from '../views/Meetting/MeetUpdate'
 import login from '../views/Public/login'
 import SignIn from '../views/Public/SignIn'
-import SendEmail from "../views/Email/EmailSend";
+import SendEmail from "../views/Message/MessageEmail";
 import {initMenu} from "../utils/menus";
 
 Vue.use(VueRouter)
@@ -45,7 +45,7 @@ const Router = new VueRouter({
       name: 'index',
       component: index,
       show: false,
-    }
+    },
 
   /*  {
       path:"/",

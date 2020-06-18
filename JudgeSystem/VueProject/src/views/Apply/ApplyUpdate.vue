@@ -1,53 +1,50 @@
 <template>
-    <div>  <el-form align="center" style="width: 50%" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+    <div>
+        <el-form align="center" style="width: 50%" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
 
-        <el-form-item label="申请人姓名" prop="name">
-            <el-input v-model="ruleForm.name"></el-input>
+        <el-form-item label="申请人姓名" >
+            <el-input v-model="ruleForm.name" disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="申请职位" prop="apply_position">
-            <el-input v-model="ruleForm.apply_position"></el-input>
+        <el-form-item label="申请类别" >
+            <el-input v-model="ruleForm.topic" disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="联系邮箱" prop="email">
-            <el-input v-model="ruleForm.email"></el-input>
+        <el-form-item label="描述" >
+            <el-input type="textarea" v-model="ruleForm.description" disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="简历附件" prop="document_path">
-            <el-input v-model="ruleForm.document_path"></el-input>
-        </el-form-item>
-        <el-form-item >填写教育经历，只需填写最高的一项或两项</el-form-item>
-        <el-form-item  label="就学时间" prop="time1">
-            <el-input v-model="ruleForm.time1" placeholder="xx年xx月至xx年xx月"></el-input>
-        </el-form-item>
-        <el-form-item label="就读学校" prop="school1">
-            <el-input v-model="ruleForm.school1" placeholder="xx大学"></el-input>
-        </el-form-item>
-        <el-form-item label="攻读学位" prop="education_level">
-            <el-select v-model="ruleForm.education_level" placeholder="xx学位">
-                <el-option label="学士学位" value="学士学位"></el-option>
-                <el-option label="硕士学位" value="硕士学位"></el-option>
-                <el-option label="博士学位" value="博士学位"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item  label="就学时间">
-            <el-input v-model="ruleForm.time2" placeholder="xx年xx月至xx年xx月"></el-input>
-        </el-form-item>
-        <el-form-item label="就读学校">
-            <el-input v-model="ruleForm.school2" placeholder="xx大学"></el-input>
-        </el-form-item>
-        <el-form-item label="攻读学位">
-            <el-select v-model="ruleForm.education_level2" placeholder="xx学位">
-                <el-option label="学士学位" value="学士学位"></el-option>
-                <el-option label="硕士学位" value="硕士学位"></el-option>
-                <el-option label="博士学位" value="博士学位"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="创建时间" prop="create_time">
+        <el-form-item label="创建时间" >
             <el-date-picker
+                    disabled="true"
                     v-model="ruleForm.create_time"
                     type="datetime"
                     placeholder="选择日期时间"
                     format="yyyy年MM月dd日 HH:mm:ss"
                     value-format="yyyy-MM-dd HH:mm:ss">
             </el-date-picker>
+        </el-form-item>
+        <el-form-item label="修改时间" >
+            <el-date-picker
+                    disabled="true"
+                    v-model="ruleForm.update_time"
+                    type="datetime"
+                    placeholder="选择日期时间"
+                    format="yyyy年MM月dd日 HH:mm:ss"
+                    value-format="yyyy-MM-dd HH:mm:ss">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item label="审核状态">
+
+            <el-switch v-model="ruleForm.review_status"active-color="#13ce66"
+                       inactive-color="#ff4949"  active-text="已审"
+                       inactive-text="未审" disabled="true"></el-switch>
+        </el-form-item>
+        <el-form-item label="评审意见" >
+            <el-input type="textarea" v-model="ruleForm.review_opinion" disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="评审结果" >
+            <el-input v-model="ruleForm.review_result" disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="评审得票" >
+            <el-input v-model="ruleForm.review_vote" disabled="true"></el-input>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -125,7 +122,8 @@
                 const _this=this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        axios.put('http://localhost:8015/apply/update',this.ruleForm).then(function (resp) {
+                        let url='http://localhost:8015/apply/update';
+                        _this.axios.put(url,this.ruleForm).then(function (resp) {
                             _this.$alert(_this.ruleForm.name + '申请修改成功', 'OK', {
                                 confirmButtonText: '确定',
                                 callback: action => {
@@ -145,7 +143,8 @@
         },
         created() {
             const _this=this
-            axios.get('http://localhost:8015/apply/findById/'+ this.$route.query.id).then(function(resp) {
+            let url='http://localhost:8015/apply/findById/'+ this.$route.query.id;
+            _this.axios.get(url).then(function(resp) {
                 _this.ruleForm=resp.data
             })
 

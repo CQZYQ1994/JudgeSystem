@@ -9,7 +9,7 @@
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="iconCls" property="iconCls" jdbcType="VARCHAR" />
         <result column="parent_id" property="parent_id" jdbcType="INTEGER" />
-        <result column="show" property="show" jdbcType="BIT" />
+        <result column="show_auth" property="show_auth" jdbcType="BIT" />
         <association property="meta" javaType="Meta">
             <result column="keep_alive" property="keep_alive" jdbcType="BIT" />
             <result column="require_auth" property="require_auth" jdbcType="BIT" />
@@ -24,7 +24,7 @@
             <result column="name2" property="name" jdbcType="VARCHAR" />
             <result column="iconCls2" property="iconCls" jdbcType="VARCHAR" />
             <result column="parent_id2" property="parent_id" jdbcType="INTEGER" />
-            <result column="show2" property="show" jdbcType="BIT" />
+            <result column="show_auth2" property="show_auth" jdbcType="BIT" />
             <association property="meta" javaType="Meta">
                 <result column="keep_alive2" property="keep_alive" jdbcType="BIT" />
                 <result column="require_auth2" property="require_auth" jdbcType="BIT" />
@@ -38,30 +38,76 @@
             <result column="rnameZh" property="nameZh"/>
         </collection>
     </resultMap>-->
- <!--   <resultMap id="MenuWithChildren" type="Menu" extends="BaseResultMap">
+    <resultMap id="MenuWithChildren" type="Menu" extends="BaseResultMap">
         <id column="id1" property="id"/>
+        <result column="url1" property="url"/>
+        <result column="path1" property="path"/>
+        <result column="component1" property="component"/>
+        <result column="show_auth1" property="show_auth"/>
         <result column="name1" property="name"/>
+        <result column="iconCls1" property="iconCls"/>
+        <association property="meta" javaType="Meta">
+            <result column="keep_alive1" property="keep_alive" jdbcType="BIT" />
+            <result column="require_auth1" property="require_auth" jdbcType="BIT" />
+        </association>
         <collection property="children" ofType="Menu">
             <id column="id2" property="id"/>
+            <result column="url2" property="url"/>
+            <result column="path2" property="path"/>
+            <result column="component2" property="component"/>
+            <result column="show_auth2" property="show_auth"/>
             <result column="name2" property="name"/>
-            <collection property="children" ofType="Menu">
-                <id column="id3" property="id"/>
-                <result column="name3" property="name"/>
-            </collection>
+            <result column="iconCls2" property="iconCls"/>
+            <association property="meta" javaType="Meta">
+                <result column="keep_alive2" property="keep_alive" jdbcType="BIT" />
+                <result column="require_auth2" property="require_auth" jdbcType="BIT" />
+            </association>
         </collection>
-    </resultMap>-->
+    </resultMap>
  <!--   <select id="getMidsByRid" resultType="java.lang.Integer">
     select mid from menu_role where rid=#{rid};
-  </select>
-    <select id="getAllMenus" resultMap="MenuWithChildren">
-    select m1.`id` as id1,m1.`name` as name1,m2.`id` as id2,m2.`name` as name2,m3.`id` as id3,m3.`name` as name3 from menu m1,menu m2,menu m3 where m1.`id`=m2.`parentId` and m2.`id`=m3.`parentId` and m3.`enabled`=true order by m1.`id`,m2.`id`,m3.`id`
   </select>
     <select id="getAllMenusWithRole" resultMap="MenuWithRole">
     select m.*,r.`id` as rid,r.`name` as rname,r.`nameZh` as rnameZh from menu m,menu_role mr,role r where m.`id`=mr.`mid` and mr.`rid`=r.`id` order by m.`id`
   </select>-->
     <select id="getMenusByUserId" resultMap="Menus2">
-    select distinct m1.*,m2.`id` as id2,m2.`component` as component2,m2.`show` as show2,m2.`iconCls` as iconCls2,m2.`keep_alive` as keep_alive2,m2.`name` as name2,m2.`parent_id` as parent_id2,m2.`require_auth` as require_auth2,m2.`path` as path2,m2.`url` as url2 from menu m1,menu m2,user_role ur,menu_role mr where m1.`id`=m2.`parent_id` and ur.`user_id`=#{user_id} and ur.`role_id`=mr.`role_id` and mr.`menu_id`=m2.`id` order by m1.`id`,m2.`id`
+    select distinct m1.*,m2.`id` as id2,m2.`component` as component2,m2.`show_auth` as show_auth2,m2.`iconCls` as iconCls2,m2.`keep_alive` as keep_alive2,m2.`name` as name2,m2.`parent_id` as parent_id2,m2.`require_auth` as require_auth2,m2.`path` as path2,m2.`url` as url2 from menu m1,menu m2,user_role ur,menu_role mr where m1.`id`=m2.`parent_id` and ur.`user_id`=#{user_id} and ur.`role_id`=mr.`role_id` and mr.`menu_id`=m2.`id` order by m1.`id`,m2.`id`
   </select>
+
+<select id="getAllMenus" resultMap="MenuWithChildren">
+    select m1.`id` as id1,m1.`url` as url1,m1.`path` as path1,m1.`component` as component1,m1.`show_auth` as show_auth1,m1.`name` as name1,m1.`iconCls` as iconCls1,m1.`keep_alive` as keep_alive1,m1.`require_auth` as require_auth1,m2.`id` as id2,m2.`url` as url2,m2.`path` as path2,m2.`component` as component2,m2.`show_auth` as show_auth2,m2.`name` as name2,m2.`iconCls` as iconCls2,m2.`keep_alive` as keep_alive2,m2.`require_auth` as require_auth2 from menu m1,menu m2 where m1.`id`=m2.`parent_id` order by m1.`id`,m2.`id`
+  </select>
+    <select id="getAll" resultMap="BaseResultMap">
+    select * from menu order by id
+  </select>
+    <select id="getMenuById" resultMap="BaseResultMap">
+    select * from menu where id=#{id}
+  </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="Menu" >
+    insert into menu (url, path,
+      component, show_auth, name, iconCls,
+      keep_alive, require_auth, parent_id)
+    values (#{url,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},
+      #{component,jdbcType=VARCHAR}, #{show_auth,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{iconCls,jdbcType=VARCHAR},
+      #{meta.keep_alive,jdbcType=BIT}, #{meta.require_auth,jdbcType=BIT}, #{parent_id,jdbcType=INTEGER})
+  </insert>
+    <update id="updateByPrimaryKey" parameterType="Menu" >
+    update menu
+    set url = #{url,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      component = #{component,jdbcType=VARCHAR},
+       show_auth = #{show_auth,jdbcType=BIT},
+      name = #{name,jdbcType=VARCHAR},
+      iconCls = #{iconCls,jdbcType=VARCHAR},
+      keep_alive = #{meta.keep_alive,jdbcType=BIT},
+      require_auth = #{meta.require_auth,jdbcType=BIT},
+      parent_id = #{parent_id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
    <!-- <sql id="Base_Column_List" >
     id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled
   </sql>
@@ -71,20 +117,8 @@
         from menu
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from menu
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-    <insert id="insert" parameterType="Menu" >
-    insert into menu (id, url, path,
-      component, name, iconCls,
-      keepAlive, requireAuth, parentId,
-      enabled)
-    values (#{id,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},
-      #{component,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{iconcls,jdbcType=VARCHAR},
-      #{keepalive,jdbcType=BIT}, #{requireauth,jdbcType=BIT}, #{parentid,jdbcType=INTEGER},
-      #{enabled,jdbcType=BIT})
-  </insert>
+
+
     <insert id="insertSelective" parameterType="Menu" >
         insert into menu
         <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -185,18 +219,6 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="Menu" >
-    update menu
-    set url = #{url,jdbcType=VARCHAR},
-      path = #{path,jdbcType=VARCHAR},
-      component = #{component,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      iconCls = #{iconcls,jdbcType=VARCHAR},
-      keepAlive = #{keepalive,jdbcType=BIT},
-      requireAuth = #{requireauth,jdbcType=BIT},
-      parentId = #{parentid,jdbcType=INTEGER},
-      enabled = #{enabled,jdbcType=BIT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>-->
+    -->
 
 </mapper>

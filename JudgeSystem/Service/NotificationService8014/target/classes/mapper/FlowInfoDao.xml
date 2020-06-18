@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.judgesystem.dao.FlowInfoDao">
+    <resultMap id="flowMap" type="FlowInfo">
+        <id column="id" property="id"></id>
+        <result column="flow_name" property="flow_name"></result>
+        <result column="flow_desc" property="flow_desc"></result>
+        <result column="add_user" property="add_user"></result>
+        <result column="add_time" property="add_time"></result>
+        <result column="mody_user" property="mody_user"></result>
+        <result column="mody_time" property="mody_time"></result>
+        <result column="del_user" property="del_user"></result>
+        <result column="del_time" property="del_time"></result>
+        <collection property="stepInfoDao" ofType="StepInfo" javaType="java.util.List">
+            <id property="id" column="step_id"></id>
+            <result property="order_id" column="step_order_id"></result>
+            <result property="step_name" column="step_name"></result>
+            <result property="step_desc" column="step_desc"></result>
+            <result property="add_user" column="step_add_user"></result>
+            <result property="add_time" column="step_add_time"></result>
+            <result property="mody_user" column="step_mody_user"></result>
+            <result property="mody_time" column="step_mody_time"></result>
+            <result property="del_user" column="step_del_user"></result>
+            <result property="del_time" column="step_del_time"></result>
+            <association property="role" javaType="Role">
+                <id property="id" column="step_role_id"></id>
+                <result property="role_name" column="step_role_name"></result>
+                <result property="role" column="step_role"></result>
+                <result property="description" column="step_role_description"></result>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="findAll" resultMap="flowMap">
+        select tf.id,tf.flow_name,tf.flow_desc,tf.add_user,tf.add_time,tf.mody_user,tf.mody_time,tf.del_user,tf.del_time,tfs.id as step_id,
+        tfs.order_id as step_order_id,
+        tfs.step_name,tfs.step_desc,
+         tfs.add_user as step_add_user,tfs.add_time as step_add_time,tfs.mody_user as step_mody_user,
+         tfs.mody_time as step_mody_time,tfs.del_user as step_del_user,tfs.del_time as step_del_time,r.id as step_role_id,r.role_name as step_role_name,
+         r.role as step_role,r.description as step_role_description
+         from task_flow tf,task_flow_step tfs,role r
+         where tf.id=tfs.task_flow_id and tfs.step_role=r.id and tf.del_sign=false and tfs.del_sign=false
+    </select>
+
+    <select id="findById" parameterType="int" resultMap="flowMap">
+       select tf.id,tf.flow_name,tf.flow_desc,tf.add_user,tf.add_time,tf.mody_user,tf.mody_time,tf.del_user,tf.del_time,tfs.id as step_id,
+        tfs.order_id as step_order_id,
+        tfs.step_name,tfs.step_desc,
+         tfs.add_user as step_add_user,tfs.add_time as step_add_time,tfs.mody_user as step_mody_user,
+         tfs.mody_time as step_mody_time,tfs.del_user as step_del_user,tfs.del_time as step_del_time,r.id as step_role_id,r.role_name as step_role_name,
+         r.role as step_role,r.description as step_role_description
+         from task_flow tf,task_flow_step tfs,role r
+         where tf.id=tfs.task_flow_id and tfs.step_role=r.id and tf.del_sign=false and tfs.del_sign=false and tf.id = #{id}
+    </select>
+    <insert id="save" parameterType="FlowInfo">
+        insert into task_flow (flow_name,flow_desc,add_user,add_time) values(#{flow_name},#{flow_desc},#{add_user},NOW())
+    </insert>
+    <update id="update" parameterType="FlowInfo">
+        update task_flow set flow_name=#{flow_name},flow_desc=#{flow_desc},mody_user=#{mody_user},mody_time=NOW() where id=#{id}
+    </update>
+    <delete id="delete" parameterType="int">
+        delete from task_flow where id = #{id}
+    </delete>
+    <update id="deleteById" parameterType="FlowInfo">
+        update task_flow set del_sign=true,del_time=NOW() where id=#{id}
+    </update>
+</mapper>

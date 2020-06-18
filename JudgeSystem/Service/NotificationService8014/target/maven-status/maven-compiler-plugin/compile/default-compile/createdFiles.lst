@@ -1,0 +1,15 @@
+com\judgesystem\TaskServiceApplication.class
+com\judgesystem\controller\NotificationServiceController.class
+com\judgesystem\entity\Role.class
+com\judgesystem\service\StepInfoService.class
+com\judgesystem\config\CrosConfig.class
+com\judgesystem\controller\StepInfoController.class
+com\judgesystem\dao\FlowInfoDao.class
+com\judgesystem\entity\Notification.class
+com\judgesystem\entity\StepInfo.class
+com\judgesystem\service\NotificationService.class
+com\judgesystem\service\FlowInfoService.class
+com\judgesystem\dao\NotificationDao.class
+com\judgesystem\dao\StepInfoDao.class
+com\judgesystem\controller\FlowInfoController.class
+com\judgesystem\entity\FlowInfo.class

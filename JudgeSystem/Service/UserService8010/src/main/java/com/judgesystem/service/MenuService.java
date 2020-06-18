@@ -11,8 +11,26 @@ import java.util.List;
 public class MenuService {
 
     @Autowired
-    MenuDao menuDao;
-    public List<Menu> gerMenusByUserId(int UserId){
+    private MenuDao menuDao;
+    public List<Menu> getMenusByUserId(int UserId){
         return menuDao.getMenusByUserId(UserId);
+    }
+    public List<Menu> getAllMenus(){
+        return menuDao.getAllMenus();
+    }
+    public List<Menu> getAll(){
+        return menuDao.getAll();
+    }
+    public Menu getMenuById(int id){
+        return menuDao.getMenuById(id);
+    }
+    public void deleteById(int id){
+        menuDao.deleteByPrimaryKey(id);
+    }
+    public void save(Menu menu){
+        menuDao.insert(menu);
+    }
+    public void updateMenus(Menu menu){
+        menuDao.updateByPrimaryKey(menu);
     }
 }

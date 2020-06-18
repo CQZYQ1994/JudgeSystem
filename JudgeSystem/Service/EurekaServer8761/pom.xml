@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>EurekaServer</artifactId>
+    <artifactId>EurekaServer8761</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

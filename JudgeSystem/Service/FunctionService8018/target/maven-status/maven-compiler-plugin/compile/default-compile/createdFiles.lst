@@ -1,0 +1,15 @@
+com\judgesystem\dao\FileEntityDao.class
+com\judgesystem\entity\EmailContent.class
+com\judgesystem\entity\ChatMsg.class
+com\judgesystem\service\MailService.class
+com\judgesystem\service\FileService.class
+com\judgesystem\config\CrosConfig.class
+com\judgesystem\config\WebSocketConfig.class
+com\judgesystem\entity\UploadFileResponse.class
+com\judgesystem\FileApp.class
+com\judgesystem\service\FileUtil.class
+com\judgesystem\controller\EmailController.class
+com\judgesystem\entity\FileEntity.class
+com\judgesystem\controller\FileController.class
+com\judgesystem\controller\MessageController.class
+com\judgesystem\entity\FileException.class

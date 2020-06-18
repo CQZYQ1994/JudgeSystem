@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.judgesystem.dao.MenuRoleDao" >
-    <!--<resultMap id="BaseResultMap" type="com.judgesystem.entity.MenuRole" >
+    <resultMap id="BaseResultMap" type="MenuRole" >
         <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="mid" property="mid" jdbcType="INTEGER" />
-        <result column="rid" property="rid" jdbcType="INTEGER" />
+        <result column="menu_id" property="menu_id" jdbcType="INTEGER" />
+        <result column="role_id" property="role_id" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List" >
-    id, mid, rid
+    id, menu_id, role_id
   </sql>
     <delete id="deleteByRid">
-    delete from menu_role where rid=#{rid}
+    delete from menu_role where role_id=#{role_id}
   </delete>
     <insert id="insertRecord">
-        insert into menu_role (mid,rid) values
-        <foreach collection="mids" separator="," item="mid">
-            (#{mid},#{rid})
+        insert into menu_role (menu_id,role_id) values
+        <foreach collection="menu_ids" separator="," item="menu_id">
+            (#{menu_id},#{role_id})
         </foreach>
     </insert>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -28,36 +28,30 @@
     delete from menu_role
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="org.javaboy.vhr.model.MenuRole" >
-    insert into menu_role (id, mid, rid)
-    values (#{id,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER})
+    <insert id="insert" parameterType="MenuRole" >
+    insert into menu_role (menu_id, role_id)
+    values ( #{menu_id,jdbcType=INTEGER}, #{role_id,jdbcType=INTEGER})
   </insert>
-    <insert id="insertSelective" parameterType="org.javaboy.vhr.model.MenuRole" >
+    <insert id="insertSelective" parameterType="MenuRole" >
         insert into menu_role
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
-                id,
+            <if test="menu_id != null" >
+                menu_id,
             </if>
-            <if test="mid != null" >
-                mid,
-            </if>
-            <if test="rid != null" >
-                rid,
+            <if test="role_id != null" >
+                role_id,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
-                #{id,jdbcType=INTEGER},
+            <if test="menu_id != null" >
+                #{menu_id,jdbcType=INTEGER},
             </if>
-            <if test="mid != null" >
-                #{mid,jdbcType=INTEGER},
-            </if>
-            <if test="rid != null" >
-                #{rid,jdbcType=INTEGER},
+            <if test="role_id != null" >
+                #{role_id,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="org.javaboy.vhr.model.MenuRole" >
+    <update id="updateByPrimaryKeySelective" parameterType="MenuRole" >
         update menu_role
         <set >
             <if test="mid != null" >
@@ -69,10 +63,10 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="org.javaboy.vhr.model.MenuRole" >
+    <update id="updateByPrimaryKey" parameterType="MenuRole" >
     update menu_role
-    set mid = #{mid,jdbcType=INTEGER},
-      rid = #{rid,jdbcType=INTEGER}
+    set menu_id = #{menu_id,jdbcType=INTEGER},
+      role_id = #{role_id,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
-  </update>-->
+  </update>
 </mapper>

@@ -5,9 +5,11 @@ import com.judgesystem.entity.Role;
 import java.util.List;
 
 public interface RoleDao {
-    public List<Role> findById(int id);
+    public Role findById(int id);
     public List<Role> findAll();
-    int deleteByPrimaryKey(Integer id);
+    public void deleteByPrimaryKey(Integer id);
+    public void updateRole(Role role);
+    public void insertRole(Role role);
 
    /* int insert(Role record);
     int insertSelective(Role record);

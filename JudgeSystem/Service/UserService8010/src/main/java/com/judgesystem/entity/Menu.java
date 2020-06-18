@@ -11,10 +11,12 @@ public class Menu {
     private String url;
     private String path;
     private String name;
-    private Boolean show;
+    private Boolean show_auth;
     private String component;
     private String iconCls;
     private Meta meta;
+    private Boolean keep_alive;
+    private Boolean require_auth;
     private int parent_id;
     private List<Menu> children;
     private List<Role> roles;

@@ -1,0 +1,41 @@
+server:
+  port: 8018
+spring:
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 1101183012@qq.com
+    password: zotnixyqtaacbadg
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+        debug: true
+  datasource:
+    name: connectJudgementSystem
+    url: jdbc:mysql://localhost:3306/judge?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      location: E:\\Downloads
+      max-file-size: 200MB
+      max-request-size: 215MB
+      resolve-lazily: false
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    instance:
+      prefer-ip-address: true
+
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.judgesystem.entity

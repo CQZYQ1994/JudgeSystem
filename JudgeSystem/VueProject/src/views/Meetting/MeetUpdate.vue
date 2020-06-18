@@ -14,16 +14,21 @@
             <el-form-item label="与会人员" prop="participants">
                 <el-input v-model="ruleForm.participants"></el-input>
             </el-form-item>
-            <el-form-item label="建议会议时间1" prop="meeting_time1">
+            <el-form-item label="会议状态">
+                <el-switch v-model="ruleForm.meet_status"active-color="#13ce66"
+                           inactive-color="#ff4949"  active-text="启用"
+                           inactive-text="过期"></el-switch>
+            </el-form-item>
+            <el-form-item label="会议创建时间" prop="create_time">
                 <el-date-picker
-                        v-model="ruleForm.meeting_time1"
+                        v-model="ruleForm.create_time"
                         type="datetime"
                         placeholder="选择日期时间"
                         format="yyyy年MM月dd日 HH:mm:ss"
                         value-format="yyyy-MM-dd HH:mm:ss">
                 </el-date-picker>
             </el-form-item>
-            <el-form-item label="建议会议时间2" >
+           <!-- <el-form-item label="建议会议时间2" >
                 <el-date-picker
                         v-model="ruleForm.meeting_time2"
                         type="datetime"
@@ -43,7 +48,7 @@
             </el-form-item>
             <el-form-item label="会议附件" >
                 <el-input v-model="ruleForm.document_path"></el-input>
-            </el-form-item>
+            </el-form-item>-->
 
 
             <el-form-item>
@@ -53,7 +58,7 @@
         </el-form>
 
 
-        <div label="上传附件">  <el-upload
+      <!--  <div label="上传附件">  <el-upload
                 class="upload-demo"
                 ref="upload"
                 action="https://jsonplaceholder.typicode.com/posts/"
@@ -64,8 +69,8 @@
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
-        </div>
+        </el-upload>-->
+       <!-- </div>-->
     </div>
 </template>
 <script>
@@ -73,15 +78,14 @@
     export default {
         data() {
             return {
-                fileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+
                 ruleForm: {
                     create_name: '',
                     topic:'',
                     place:'',
                     participants:'',
-                    meeting_time1:'',
-                    meeting_time2:'',
-                    meeting_time3:'',
+                    meet_status:'',
+                    create_time:'',
                     document_path:''
                 },
                 rules: {
@@ -101,7 +105,7 @@
                         { required: true, message: '请输入与会人员', trigger: 'blur' },
                         { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
                     ],
-                    meeting_time1: [
+                    create_time: [
                         {  required: true, message: '请选择日期', trigger: 'change' }
                     ],
 
@@ -113,11 +117,12 @@
                 const _this=this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        axios.put('http://localhost:8012/meet/update',this.ruleForm).then(function (resp) {
+                        let url='http://localhost:8012/meetInfo/update';
+                        _this.axios.put(url,this.ruleForm).then(function (resp) {
                             _this.$alert(_this.ruleForm.topic + '会议表修改成功', 'OK', {
                                 confirmButtonText: '确定',
                                 callback: action => {
-                                    _this.$router.push('/MeetManagement')
+                                    _this.$router.push('/MeetManage')
                                 }
                             });
                         })
@@ -133,7 +138,8 @@
         },
         created() {
             const _this=this
-            axios.get('http://localhost:8012/meet/findById/'+ this.$route.query.id).then(function(resp) {
+            let url='http://localhost:8012/meetInfo/findById/'+ this.$route.query.id;
+            _this.axios.get(url).then(function(resp) {
                 _this.ruleForm=resp.data
             })
 

@@ -1,0 +1,10 @@
+com\judgesystem\dao\MeetingTimeDao.class
+com\judgesystem\config\CrosConfig.class
+com\judgesystem\entity\MeetingInfo.class
+com\judgesystem\MeetingServiceApplication.class
+com\judgesystem\controller\MeetingInfoController.class
+com\judgesystem\dao\MeetingInfoDao.class
+com\judgesystem\entity\MeetingTime.class
+com\judgesystem\service\MeetingTimeService.class
+com\judgesystem\controller\MeetingTimeController.class
+com\judgesystem\service\MeetingInfoService.class

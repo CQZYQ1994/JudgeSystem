@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.judgesystem.dao.StepInfoDao">
+    <resultMap id="stepMap" type="StepInfo">
+            <id property="id" column="id"></id>
+            <result property="order_id" column="order_id"></result>
+            <result property="step_name" column="step_name"></result>
+            <result property="step_desc" column="step_desc"></result>
+            <result property="add_user" column="add_user"></result>
+            <result property="add_time" column="add_time"></result>
+            <result property="mody_user" column="mody_user"></result>
+            <result property="mody_time" column="mody_time"></result>
+            <result property="del_user" column="del_user"></result>
+            <result property="del_time" column="del_time"></result>
+            <association property="role" javaType="Role">
+                <id property="id" column="step_role_id"></id>
+                <result property="role_name" column="step_role_name"></result>
+                <result property="role" column="step_role"></result>
+                <result property="description" column="step_role_description"></result>
+            </association>
+
+    </resultMap>
+    <select id="findAll" resultMap="stepMap">
+        select tfs.id,
+        tfs.order_id ,
+        tfs.step_name,tfs.step_desc,
+         tfs.add_user,tfs.add_time,tfs.mody_user,
+         tfs.mody_time,tfs.del_user,tfs.del_time,r.id as step_role_id,r.role_name as step_role_name,
+         r.role as step_role,r.description as step_role_description
+         from task_flow_step tfs,role r
+         where tfs.step_role=r.id and tfs.del_sign=false
+    </select>
+
+    <select id="findById" parameterType="int" resultMap="stepMap">
+       select tfs.id,
+        tfs.order_id ,
+        tfs.step_name,tfs.step_desc,
+         tfs.add_user,tfs.add_time,tfs.mody_user,
+         tfs.mody_time,tfs.del_user,tfs.del_time,r.id as step_role_id,r.role_name as step_role_name,
+         r.role as step_role,r.description as step_role_description
+         from task_flow_step tfs,role r
+         where tfs.step_role=r.id and tfs.del_sign=false and tfs.id = #{id}
+    </select>
+    <insert id="save" parameterType="StepInfo">
+        insert into task_flow_step (task_flow_id,order_id,step_name,step_desc,add_user,add_time) values(#{task_flow_id},#{order_id},#{step_name},#{step_desc},#{add_user},NOW())
+    </insert>
+    <update id="update" parameterType="StepInfo">
+        update task_flow_step set task_flow_id=#{task_flow_id},order_id=#{order_id},step_name=#{step_name},step_desc=#{step_desc},mody_user=#{mody_user},mody_time=NOW() where id=#{id}
+    </update>
+    <delete id="delete" parameterType="int">
+        delete from task_flow_step where id = #{id}
+    </delete>
+    <update id="deleteById" parameterType="StepInfo">
+        update task_flow_step set del_sign=true,del_time=NOW() where id=#{id}
+    </update>
+    <insert id="addSteps">
+        insert into task_flow_step (task_flow_id,order_id,step_name,step_desc,add_user,add_time)
+        values
+        <foreach collection="list" separator="," item="step">
+            (#{step.task_flow_id},#{step.order_id},#{step.step_name},#{step.step_desc},#{step.add_user},NOW())
+        </foreach>
+    </insert>
+</mapper>

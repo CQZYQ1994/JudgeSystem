@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.judgesystem.dao.MeetingTimeDao">
+    <resultMap id="BaseResultMap" type="MeetingTime" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="meetingTime" property="meetingTime" jdbcType="DATE" />
+        <result column="vote" property="vote" jdbcType="INTEGER" />
+        <association property="meetingInfo" javaType="MeetingInfo">
+            <id column="id" property="id" jdbcType="INTEGER" />
+            <result column="create_name" property="create_name" jdbcType="VARCHAR" />
+            <result column="topic" property="topic" jdbcType="VARCHAR" />
+            <result column="place" property="place" jdbcType="VARCHAR" />
+            <result column="participants" property="participants" jdbcType="VARCHAR" />
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from meetingTime mt,meetingInfo mi where mt.meetingInfoId = mi.id
+    </select>
+    <select id="count" resultType="int">
+        select count(id) from meetingTime
+    </select>
+    <select id="findById" parameterType="int" resultMap="BaseResultMap">
+        select * from  meetingTime mt,meetingInfo mi where mt.id = #{id} and mt.meetingInfoId=mi.id
+    </select>
+    <select id="findByInfoId" parameterType="int" resultMap="BaseResultMap">
+        select * from meetingTime mt,MeetingInfo mi where mt.meetingInfoId = mi.id and mi.id=#{id}
+    </select>
+    <select id="findCurrentMeetTime" resultMap="BaseResultMap">
+        select * from meetingTime mt,MeetingInfo mi where mt.meetingInfoId = mi.id and mi.meet_status=true
+    </select>
+    <insert id="save" parameterType="MeetingTime">
+        insert into meetingTime (meetingInfoId,meetingTime,vote) values(#{meetingInfoId},#{meetingTime},#{vote})
+    </insert>
+    <update id="update" parameterType="MeetingTime">
+        update meetingTime set meetingInfoId = #{meetingInfoId},meetingTime = #{meetingTime},vote = #{vote} where id=#{id}
+    </update>
+    <update id="updateVote" parameterType="MeetingTime">
+        update meetingTime set vote = #{vote} where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="int">
+        delete from meetingTime where id = #{id}
+    </delete>
+    <insert id="addMeetingTime">
+        insert into meetingTime (meetingInfoId,meetingTime,vote)
+        values
+        <foreach collection="list" separator="," item="mt">
+            (#{mt.meetingInfoId,jdbcType=INTEGER},#{mt.meetingTime,jdbcType=DATE},#{mt.vote,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+</mapper>

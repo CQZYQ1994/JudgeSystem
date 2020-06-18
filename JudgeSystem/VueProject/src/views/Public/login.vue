@@ -13,12 +13,12 @@
                     <el-form-item label="用户密码" prop="password">
                         <el-input prefix-icon="el-icon-lock" v-model="ruleForm.password" show-password></el-input>
                     </el-form-item>
-                    <el-form-item label="登录方式" prop="role">
+                    <!--<el-form-item label="登录方式" prop="role">
                         <el-select style="width: 45%"  v-model="ruleForm.role" placeholder="请选择方式">
                             <el-option label="校内人员" value="user"></el-option>
                             <el-option label="校外人员" value="applicant"></el-option>
                         </el-select>
-                    </el-form-item>
+                    </el-form-item>-->
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
                         <el-button type="primary" @click="SignIn('ruleForm')">注册</el-button>
@@ -31,13 +31,13 @@
 </template>
 
 <script>
+    import jwt from 'jwt-decode';
     export default {
         data() {
             return {
                 ruleForm: {
                     username: '',
                     password: '',
-                    role:''
                 },
                 user: [],
                 rules: {
@@ -49,9 +49,9 @@
                         { required: true, message: '请输入密码', trigger: 'blur' },
                         { min: 3, max:20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
                     ],
-                    role: [
+                   /* role: [
                         { required: true, message: '请选择活动区域', trigger: 'change' }
-                    ]
+                    ]*/
 
                 }
             };
@@ -61,14 +61,20 @@
                 const  _this=this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        _this.axios.get('http://localhost:8010/account/login/'+this.ruleForm.username+'/'+this.ruleForm.password+'/'+this.ruleForm.role).then(function (resp) {
-                            console.log(resp)
+                        let url='http://localhost:8060/userservice/account/login/'+_this.ruleForm.username+'/'+_this.ruleForm.password;
+                        _this.axios.get(url).then(function (resp) {
                             _this.token=resp.data
                             if(_this.token.name!=null){
                             _this.$alert(_this.token.name+'登录成功', 'OK', {
                                 confirmButtonText: '确定',
                                 callback: action => {
+                                    //console.log(_this.token)
+                                    //const decoded=jwt(_this.token)
+                                   // console.log(decoded)
                                     _this.$store.commit('login', _this.token)
+                                   // _this.$store.commit('initTokenKey', _this.token)
+                                   /*_this.$store.commit('initCurrentUser', _this.token),
+                                    _this.$store.commit('INIT_USER', _this.token),*/
                                     _this.$router.push('/')
 
                                 }

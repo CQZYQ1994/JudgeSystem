@@ -1,0 +1,15 @@
+server:
+  port: 8060
+spring:
+  cloud:
+    config:
+      enabled: false
+  application:
+    name: ZuulServer
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    instance:
+      prefer-ip-address: true

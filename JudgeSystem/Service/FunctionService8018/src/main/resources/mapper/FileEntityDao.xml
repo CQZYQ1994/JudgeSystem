@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.judgesystem.dao.FileEntityDao">
+    <resultMap id="fileMap" type="FileEntity">
+        <id column="id" property="id"></id>
+        <result column="uploadtime" property="uploadtime"></result>
+        <result column="fileUrl" property="fileUrl"></result>
+        <result column="fileName" property="fileName"></result>
+    </resultMap>
+
+    <select id="findAll" resultMap="fileMap">
+        select id,uploadtime,fileUrl,fileName from filesave
+    </select>
+
+    <select id="findFileById" resultMap="fileMap">
+        select  id,uploadtime,fileUrl,fileName from filesave  where id = #{id}
+    </select>
+
+    <insert id="saveUploadFile" parameterType="FileEntity">
+        insert into filesave (uploadtime,fileUrl,fileName) values(#{uploadtime},#{fileUrl},#{fileName})
+    </insert>
+
+    <update id="update" parameterType="FileEntity">
+        update filesave set uploadtime = #{uploadtime},fileurl = #{fileurl},fileName = #{fileName} where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="int">
+        delete from filesave where id = #{id}
+    </delete>
+    <insert id="addFile">
+        insert into filesave (uploadtime,fileurl,fileName)
+        values
+        <foreach collection="list" separator="," item="fileEntity">
+            (#{fileEntity.uploadtime,jdbcType=VARCHAR}, #{fileEntity.fileUrl,jdbcType=VARCHAR}, #{fileEntity.fileName,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+</mapper>
